@@ -1,0 +1,278 @@
+{
+  "incident_id": "a1b2c3d4e5f6",
+  "review_date": "2026-07-31",
+  "record_name": "incident-exampleworks-payment",
+  "message_count": 8,
+  "summary": {
+    "title": "決済 API への総当たり攻撃とフィッシング配布",
+    "severity": null,
+    "affected_systems": ["payment-api", "社内端末 3 台"],
+    "timeline": [
+      {
+        "timestamp": "2026-07-10T09:15:00+09:00",
+        "actor": "alice",
+        "event": "決済 API のエラーレート急上昇と 203[.]0[.]113[.]45 からの大量リクエストを検知"
+      },
+      {
+        "timestamp": "2026-07-10T09:20:00+09:00",
+        "actor": "bob",
+        "event": "IC を宣言し、調査分担を指示"
+      },
+      {
+        "timestamp": "2026-07-10T09:35:00+09:00",
+        "actor": "alice",
+        "event": "アクセスログから POST /v1/charge への総当たりと参照元 hxxps://malicious[.]example[.]net/payload.sh を特定"
+      },
+      {
+        "timestamp": "2026-07-10T09:45:00+09:00",
+        "actor": "bob",
+        "event": "攻撃元 IP を WAF でブロック（封じ込め）"
+      },
+      {
+        "timestamp": "2026-07-10T10:30:00+09:00",
+        "actor": "carol",
+        "event": "フィッシング配布ドメイン evil[.]example[.]com への社内アクセス 3 件を確認し、該当端末を隔離"
+      },
+      {
+        "timestamp": "2026-07-10T11:00:00+09:00",
+        "actor": "bob",
+        "event": "エラーレート正常化を確認しインシデントをクローズ"
+      }
+    ],
+    "root_cause": "外部 IP からの決済 API への総当たり攻撃。並行して同一攻撃者によるとみられるフィッシングメールが配布されていた。",
+    "resolution": "攻撃元 IP の WAF ブロックと、フィッシング配布ドメインへアクセスした社内端末 3 台の隔離により収束。",
+    "summary": "2026-07-10 朝、決済 API のエラーレート急上昇を alice が検知し、bob が IC としてトリアージを主導した。アクセスログ調査で 203[.]0[.]113[.]45 からの総当たり攻撃を特定して WAF でブロックし、carol が関連フィッシングの社内影響（アクセス 3 件）を確認して端末を隔離、約 1 時間 45 分でクローズした。"
+  },
+  "activity": {
+    "participants": [
+      {
+        "user_name": "alice",
+        "role_hint": "最初の検知者・ログ調査担当",
+        "actions": [
+          {
+            "timestamp": "2026-07-10T09:15:00+09:00",
+            "purpose": "異常の検知と共有",
+            "method": "エラーレート監視と送信元 IP の目視確認",
+            "findings": "203[.]0[.]113[.]45 からの大量リクエスト"
+          },
+          {
+            "timestamp": "2026-07-10T09:35:00+09:00",
+            "purpose": "攻撃手口の特定",
+            "method": "grep '203[.]0[.]113[.]45' /var/log/nginx/access.log | head によるアクセスログ調査",
+            "findings": "POST /v1/charge への総当たり、UA curl/8.5.0、参照元 hxxps://malicious[.]example[.]net/payload.sh"
+          }
+        ]
+      },
+      {
+        "user_name": "alertbot",
+        "role_hint": "監視アラート通知",
+        "actions": [
+          {
+            "timestamp": "2026-07-10T09:16:00+09:00",
+            "purpose": "しきい値超過の自動通知",
+            "method": "payment-api の 5xx レート監視アラート",
+            "findings": "5xx レート 20% 超過"
+          }
+        ]
+      },
+      {
+        "user_name": "bob",
+        "role_hint": "IC・封じ込め実施",
+        "actions": [
+          {
+            "timestamp": "2026-07-10T09:20:00+09:00",
+            "purpose": "指揮体制の確立",
+            "method": "IC 宣言と調査分担の指示",
+            "findings": ""
+          },
+          {
+            "timestamp": "2026-07-10T09:45:00+09:00",
+            "purpose": "攻撃の封じ込め",
+            "method": "WAF による攻撃元 IP のブロック",
+            "findings": ""
+          },
+          {
+            "timestamp": "2026-07-10T11:00:00+09:00",
+            "purpose": "収束確認とクローズ",
+            "method": "エラーレートの正常化確認",
+            "findings": "エラーレート正常化"
+          }
+        ]
+      },
+      {
+        "user_name": "carol",
+        "role_hint": "フィッシング影響調査",
+        "actions": [
+          {
+            "timestamp": "2026-07-10T09:40:00+09:00",
+            "purpose": "関連フィッシングの共有",
+            "method": "受信フィッシングメール本文の貼付",
+            "findings": "attacker[@]phish[.]example[.]org 宛の誘導文面"
+          },
+          {
+            "timestamp": "2026-07-10T10:30:00+09:00",
+            "purpose": "社内影響範囲の確認",
+            "method": "配布ドメインへのアクセスログ確認と端末隔離",
+            "findings": "evil[.]example[.]com へのアクセス 3 件、添付ハッシュ d41d8cd98f00b204e9800998ecf8427e"
+          }
+        ]
+      }
+    ]
+  },
+  "roles": {
+    "participants": [
+      {
+        "user_name": "alice",
+        "inferred_role": "investigator",
+        "confidence": "high",
+        "evidence": ["IC の指示を受けてアクセスログ調査を実施し、結果を随時共有している"]
+      },
+      {
+        "user_name": "alertbot",
+        "inferred_role": "monitoring bot",
+        "confidence": "high",
+        "evidence": ["post_type が bot で、しきい値超過アラートのみを投稿"]
+      },
+      {
+        "user_name": "bob",
+        "inferred_role": "incident commander",
+        "confidence": "high",
+        "evidence": ["「私がICやります」と明示的に宣言", "調査分担の指示と封じ込め判断を一貫して実施"]
+      },
+      {
+        "user_name": "carol",
+        "inferred_role": "investigator",
+        "confidence": "medium",
+        "evidence": ["フィッシング影響調査を担当したが、役割の明示的な割り当ては bob の指示のみ"]
+      }
+    ],
+    "relationships": [
+      {
+        "from_user": "bob",
+        "to_user": "alice",
+        "relationship_type": "directs",
+        "description": "アクセスログ調査を指示"
+      },
+      {
+        "from_user": "bob",
+        "to_user": "carol",
+        "relationship_type": "directs",
+        "description": "フィッシング配布状況の確認を指示"
+      },
+      {
+        "from_user": "alice",
+        "to_user": "bob",
+        "relationship_type": "reports_to",
+        "description": "ログ調査結果を IC へ報告"
+      },
+      {
+        "from_user": "bob",
+        "to_user": null,
+        "relationship_type": "broadcasts",
+        "description": "クローズ判断をチャンネル全体へ共有"
+      }
+    ]
+  },
+  "review": {
+    "overall_score": "good",
+    "phases": [
+      {
+        "phase": "detection",
+        "estimated_duration": "~1 分",
+        "quality": "good",
+        "notes": "人による検知とアラートがほぼ同時（09:15/09:16）"
+      },
+      {
+        "phase": "initial_response",
+        "estimated_duration": "~5 分",
+        "quality": "good",
+        "notes": "検知から 5 分で IC 宣言と分担指示"
+      },
+      {
+        "phase": "investigation",
+        "estimated_duration": "~70 分",
+        "quality": "good",
+        "notes": "ログ調査とフィッシング影響調査が並行して進行"
+      },
+      {
+        "phase": "containment",
+        "estimated_duration": "~25 分",
+        "quality": "good",
+        "notes": "手口特定から 10 分で WAF ブロック、端末隔離まで実施"
+      },
+      {
+        "phase": "resolution",
+        "estimated_duration": "unknown",
+        "quality": "adequate",
+        "notes": "正常化確認でクローズしたが、恒久対策の議論は記録内に無い"
+      }
+    ],
+    "communication": {
+      "overall": "報告・指示・結果共有のループが短く、明確に機能していた。",
+      "delays_observed": ["09:45 の指示から carol の初回報告まで 45 分間状況更新が無い"],
+      "silos_observed": []
+    },
+    "role_clarity": {
+      "ic_identified": true,
+      "ic_name": "bob",
+      "gaps": ["対外コミュニケーション担当が置かれていない"],
+      "overlaps": []
+    },
+    "tool_appropriateness": "grep によるログ調査と WAF ブロックは目的に対して適切。監視アラートのしきい値も機能した。",
+    "strengths": [
+      "検知から 5 分で指揮体制が確立した",
+      "API 攻撃とフィッシングの 2 面を並行調査できた"
+    ],
+    "improvements": [
+      "長時間タスクには途中経過の報告間隔を決める",
+      "クローズ時に恒久対策とフォローアップ項目を記録する"
+    ],
+    "checklist": [
+      { "item": "調査タスク割り当て時に次回報告時刻をセットで指示する", "priority": "medium" },
+      { "item": "クローズ時テンプレートに恒久対策欄を追加する", "priority": "high" },
+      { "item": "対外コミュニケーション担当の要否を初動で判断する", "priority": "low" }
+    ]
+  },
+  "tactics": [
+    {
+      "id": "t-001",
+      "title": "攻撃元 IP を軸にしたアクセスログの総当たり判定",
+      "purpose": "特定の送信元 IP がどのエンドポイントへ何をしているかを最短で把握する",
+      "category": "log-analysis",
+      "tools": ["grep", "nginx access log"],
+      "procedure": "grep '<攻撃元IP>' /var/log/nginx/access.log | head で対象 IP の行を抽出し、メソッド・パス・UA・参照元を確認する。",
+      "observations": "POST /v1/charge への総当たりと UA curl/8.5.0、参照元 hxxps://malicious[.]example[.]net/payload.sh が判明した。",
+      "tags": ["nginx", "brute-force", "triage"],
+      "confidence": "confirmed",
+      "evidence": "コマンドと抽出結果（パス・UA・参照元）が記録内に共有されている。",
+      "source": {
+        "channel": "incident-exampleworks-payment",
+        "participants": ["alice"]
+      },
+      "created_at": "2026-07-31"
+    },
+    {
+      "id": "t-002",
+      "title": "フィッシング配布ドメインへの社内アクセス有無の確認",
+      "purpose": "フィッシングの社内影響範囲（クリック・アクセスした端末）を特定する",
+      "category": "network-analysis",
+      "tools": ["proxy log"],
+      "procedure": "配布ドメインを対象に社内からのアクセス記録を検索し、該当端末を隔離する。",
+      "observations": "evil[.]example[.]com へのアクセス 3 件を確認し、端末を隔離した。",
+      "tags": ["phishing", "scoping"],
+      "confidence": "inferred",
+      "evidence": "アクセス 3 件という結果は共有されたが、使用したコマンド・クエリ自体は記録に無い。",
+      "source": {
+        "channel": "incident-exampleworks-payment",
+        "participants": ["carol"]
+      },
+      "created_at": "2026-07-31"
+    }
+  ],
+  "security_notes": {
+    "injection_flagged_messages": 1,
+    "warnings": [
+      "messages[4] (carol @ 2026-07-10T09:40:00+09:00): Instruction override attempt: matched 'Ignore all previous instructions' at position 33"
+    ]
+  }
+}

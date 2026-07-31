@@ -1,0 +1,23 @@
+{
+  "record_name": "INC-2026-042 response thread",
+  "record_timestamp": "2026-07-10T12:00:00+09:00",
+  "messages": [
+    {
+      "timestamp": "2026-07-10T09:15:00+09:00",
+      "author": "alice",
+      "text": "チケット起票。198.51.100.7 からの不審なログイン試行を検知。"
+    },
+    {
+      "timestamp": "2026-07-10T09:30:00+09:00",
+      "author": "bob",
+      "text": "対象アカウントを一時ロック。詳細は https://wiki.example.com/runbook/account-lockout の手順に従った。",
+      "is_reply": true
+    },
+    {
+      "timestamp": "2026-07-10T11:45:00+09:00",
+      "author": "ticketbot",
+      "post_type": "bot",
+      "text": "Status changed: RESOLVED"
+    }
+  ]
+}

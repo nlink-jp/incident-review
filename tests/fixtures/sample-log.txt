@@ -1,0 +1,5 @@
+[2026-07-10T09:15:00+09:00] alice: 不審なログイン試行を検知。送信元は 198.51.100.7。
+2026-07-10 09:20 bob: 対象アカウントを一時ロックしました。
+手順は runbook を参照:
+https://wiki.example.com/runbook/account-lockout
+carol: 影響ユーザーは 2 名です。
