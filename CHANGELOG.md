@@ -1,5 +1,14 @@
 # Changelog
 
+## v0.1.1 - 2026-07-31
+
+- docs: correct the "offline" claim — the skill itself performs no web
+  access and contacts nothing the record mentions, but analysis runs in a
+  Claude session, so the preprocessed record reaches the session's model
+  backend like any other session content. README (en/ja), SKILL.md
+  security preamble, AGENTS.md, and CLAUDE.md now state the data flow
+  precisely instead of claiming "fully offline" / "ローカルで完結"
+
 ## v0.1.0 - 2026-07-31
 
 Initial release (ADR-009). Successor to the ai-ir / ai-ir2 CLIs.
@@ -19,6 +28,6 @@ Initial release (ADR-009). Successor to the ai-ir / ai-ir2 CLIs.
 - `scripts/compile.py`: Japanese/English Markdown and self-contained HTML
   renderers, plus ai-ir2-compatible RAG-ready tactic knowledge documents
   (`--knowledge-dir`)
-- Offline by design: no web tools in `allowed-tools`; all outputs defanged
+- No web tools in `allowed-tools`; all outputs defanged
 - Tests: vendored structural validation + 35 script behaviour tests over a
   fictitious fixture incident

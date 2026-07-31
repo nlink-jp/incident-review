@@ -12,7 +12,8 @@ Successor to the [ai-ir](https://github.com/nlink-jp/ai-ir) /
 [ai-ir2](https://github.com/nlink-jp/ai-ir2) CLIs, and companion to
 [incident-research](https://github.com/nlink-jp/incident-research): that
 skill researches *someone else's public* incident from the web; this one
-reviews *your own* incident from its internal record, fully offline. Three
+reviews *your own* incident from its internal record, with zero contact
+with anything the record mentions. Three
 design points carry the weight (design:
 [ADR-009](https://github.com/nlink-jp/.github/blob/main/adr/009-incident-review-skill.md)):
 
@@ -32,9 +33,12 @@ design points carry the weight (design:
   output was actually shared in the record), with the field set kept
   compatible with ai-ir2's knowledge documents.
 
-The analysis is offline by design: the skill never fetches URLs or contacts
-any host mentioned in the record. IoC enrichment is a separate, deliberate
-step outside this skill.
+The skill itself performs no web access: it never fetches URLs and never
+contacts any host mentioned in the record — IoC enrichment is a separate,
+deliberate step outside this skill. Note that the analysis runs in your
+Claude session, so the preprocessed (defanged, nonce-isolated) record is
+sent to the model backend powering the session, like any other session
+content; nothing goes anywhere else.
 
 ## Install
 
@@ -99,8 +103,9 @@ cross-incident trends are out of scope.
   invisible to it.
 - All IoCs in every output are defanged (`hxxps`, `[.]`); reports are safe
   to share and index.
-- The record is treated as confidential and the analysis stays on the local
-  machine.
+- The record is treated as confidential: outputs stay in the local report
+  directory, and record content reaches nothing beyond the model backend
+  that powers your Claude session.
 
 ## License
 

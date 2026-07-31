@@ -11,7 +11,8 @@ inference, process-quality review) plus RAG-ready investigation-tactic
 knowledge documents. Invoked as `/incident-review <record-file>`. Successor
 to the ai-ir / ai-ir2 CLIs (design: ADR-009); companion to
 `incident-research` (which researches someone else's public incident; this
-reviews your own, fully offline). The analyzing agent never reads the raw
+reviews your own, touching nothing the record mentions and using no web
+tools). The analyzing agent never reads the raw
 record: `scripts/preprocess.py` is the mandatory gate (IoC defanging,
 nonce-tagged message isolation, injection flagging, input normalization).
 
@@ -66,8 +67,10 @@ incident-review/
   installed (Claude Code hosts, claude.ai sandboxes); a pip dependency would
   break them silently.
 - **`allowed-tools` in SKILL.md deliberately excludes web tools** — the
-  analysis is offline (the record quotes attacker infrastructure that must
-  never be contacted). Don't add WebFetch/WebSearch.
+  record quotes attacker infrastructure that must never be contacted, and
+  the skill itself performs no web access. Don't add WebFetch/WebSearch.
+  (Analysis still runs in a Claude session, so record content reaches the
+  session's model backend — never claim the skill is "fully offline".)
 - `preprocess.py` is ported from ai-ir2's `parser/{loader,defang,sanitizer}`
   — the nonce tag is `<user_message_{nonce}>` (ai-ir2 compatible), and the
   preprocessed output deliberately carries only defanged IoC values, never

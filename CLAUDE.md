@@ -15,9 +15,11 @@ See [`AGENTS.md`](AGENTS.md) for commands, structure, and gotchas.
 - **Bundled scripts are stdlib-only Python** — no third-party dependencies,
   ever; they must run on any host the skill is installed on.
 - **The preprocessing gate is the security model** — SKILL.md routes all
-  analysis through `preprocess.py` (defang + nonce isolation) and declares
-  the analysis offline (no web tools in `allowed-tools`). Keep the security
-  preamble at the top of SKILL.md intact.
+  analysis through `preprocess.py` (defang + nonce isolation) and bars web
+  tools in `allowed-tools` (nothing the record mentions is ever
+  contacted). Keep the security preamble at the top of SKILL.md intact,
+  and never describe the skill as "fully offline" — record content still
+  reaches the session's model backend.
 
 ## Communication Language
 
