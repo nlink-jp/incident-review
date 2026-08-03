@@ -14,7 +14,7 @@ scli）、プレーンテキストの会話ログ、コネクター経由で読�
 *自組織の* 事案を内部記録から、記録に登場する対象への接続ゼロで
 レビューします。設計の要点は
 3 つ（設計:
-[ADR-009](https://github.com/nlink-jp/.github/blob/main/adr/009-incident-review-skill.md)）:
+[ADR-0001](docs/ja/adr/0001-retrospective-analysis.ja.md)）:
 
 - **必須の前処理ゲート** — 分析エージェントは生の記録を読みません。
   `preprocess.py` が全 IoC を defang し、全メッセージをノンス付きタグで
@@ -90,7 +90,7 @@ tactics）→ 検証 → コンパイルのワークフローを経て、`./repo
 
 - [入力形式仕様](incident-review/references/input-formats.md)
 - [レポート形式仕様](incident-review/references/report-format.md)
-- [ADR-009 — 設計決定記録](https://github.com/nlink-jp/.github/blob/main/adr/009-incident-review-skill.md)
+- [ADR-0001 — 設計決定記録](docs/ja/adr/0001-retrospective-analysis.ja.md)
 - [English documentation](README.md)
 
 ## 注意事項

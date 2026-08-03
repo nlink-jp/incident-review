@@ -15,7 +15,7 @@ skill researches *someone else's public* incident from the web; this one
 reviews *your own* incident from its internal record, with zero contact
 with anything the record mentions. Three
 design points carry the weight (design:
-[ADR-009](https://github.com/nlink-jp/.github/blob/main/adr/009-incident-review-skill.md)):
+[ADR-0001](docs/en/adr/0001-retrospective-analysis.md)):
 
 - **A mandatory preprocessing gate** — the analyzing agent never reads the
   raw record. `preprocess.py` defangs every IoC, wraps every message in
@@ -94,7 +94,7 @@ cross-incident trends are out of scope.
 
 - [Input format specification](incident-review/references/input-formats.md)
 - [Report format specification](incident-review/references/report-format.md)
-- [ADR-009 — design decision record](https://github.com/nlink-jp/.github/blob/main/adr/009-incident-review-skill.md)
+- [ADR-0001 — design decision record](docs/en/adr/0001-retrospective-analysis.md)
 - [日本語ドキュメント](README.ja.md)
 
 ## Notes

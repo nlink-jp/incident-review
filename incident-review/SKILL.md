@@ -51,7 +51,7 @@ Analyzes one incident's response record after the fact and produces, in
 `<incident_id>` is printed by `preprocess.py` (deterministic 12-char hash
 of the record name and timestamp, so re-runs of the same record collide
 predictably). Retrospective only: live analysis during an ongoing incident
-and cross-incident trends are out of scope (ADR-009).
+and cross-incident trends are out of scope (ADR-0001).
 
 ## Inputs
 

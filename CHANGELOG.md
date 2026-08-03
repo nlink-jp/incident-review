@@ -1,5 +1,15 @@
 # Changelog
 
+## [Unreleased]
+
+### Changed
+
+- The design record for this skill moved out of the organization ADR log
+  into `docs/{en,ja}/adr/` (0001 retrospective analysis, formerly
+  organization ADR-009), now mirrored in Japanese as well as English. The
+  organization log is for decisions that bind the whole organization; the
+  old number stays reserved there as a redirect.
+
 ## v0.1.1 - 2026-07-31
 
 - docs: correct the "offline" claim — the skill itself performs no web

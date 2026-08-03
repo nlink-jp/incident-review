@@ -9,7 +9,8 @@ conversation/timeline record via a generic transcript format — and emits a
 schema-validated JSON report (summary, per-participant activity, role
 inference, process-quality review) plus RAG-ready investigation-tactic
 knowledge documents. Invoked as `/incident-review <record-file>`. Successor
-to the ai-ir / ai-ir2 CLIs (design: ADR-009); companion to
+to the ai-ir / ai-ir2 CLIs (design:
+[ADR-0001](docs/en/adr/0001-retrospective-analysis.md)); companion to
 `incident-research` (which researches someone else's public incident; this
 reviews your own, touching nothing the record mentions and using no web
 tools). The analyzing agent never reads the raw
@@ -81,12 +82,12 @@ incident-review/
   heuristic (`author: text` lines, URL-scheme lines always continuations);
   messy sources go through the generic transcript instead — don't grow the
   heuristic to chase them.
-- The trust boundary (ADR-009): analysis reads only preprocess output;
+- The trust boundary (ADR-0001): analysis reads only preprocess output;
   Phase 0 acquisition/conversion is mechanical-copy-only. Keep SKILL.md's
   Phase 0 rules and the security preamble consistent if either changes.
 - The tactic object's field set (incl. `source.channel` naming and
   `confirmed`/`inferred`/`suggested` semantics) is ai-ir2-compatible by
-  ADR-009 decision — don't rename fields.
+  ADR-0001 decision — don't rename fields.
 - `scripts/validate.py` is a deliberate subset of JSON Schema (type incl.
   `["string","null"]` unions, required, properties, items, enum, minItems,
   format: date, boolean, integer). If schema.json ever grows beyond that
