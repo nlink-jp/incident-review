@@ -38,18 +38,25 @@ scli）、プレーンテキストの会話ログ、コネクター経由で読�
 
 ## インストール
 
-リリース zip から（claude.ai → Settings → Skills にそのままアップロード
-も可能）:
+[Releases](https://github.com/nlink-jp/incident-review/releases) から
+`incident-review-vX.Y.Z.zip` をダウンロードし、登録する:
 
-```bash
-unzip incident-review-vX.Y.Z.zip -d ~/.claude/skills/
-```
+- **アプリから**（Claude Desktop / claude.ai / モバイル）— スキル設定
+  （カスタマイズ → スキル）で zip を追加する。**この経路を推奨**。
+  スキルの保存場所が変わっても影響を受けない。
+- **Claude Code** — `unzip incident-review-vX.Y.Z.zip -d ~/.claude/skills/`。
+  プロジェクト単位なら、プロジェクト内の `.claude/skills/` に展開する。
 
 チェックアウトから:
 
 ```bash
 make install
 ```
+
+リリース zip をビルドして**それを**展開するので、手元で動かすものと
+リリースが配るものが一致する。パッケージングの欠陥は利用者に届く前に
+手元のインストールを壊す。`make install DEST=/path/to/skills` で別の場所へ、
+`make uninstall` で削除。
 
 必要環境: Claude Code と `python3`（3.9+、stdlib のみ）。API キーや
 クラウドプロジェクトは不要です — ai-ir2 の Vertex AI 依存はなくなりました。

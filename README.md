@@ -42,17 +42,25 @@ content; nothing goes anywhere else.
 
 ## Install
 
-From a release zip (also uploadable as-is to claude.ai → Settings → Skills):
+Download `incident-review-vX.Y.Z.zip` from
+[Releases](https://github.com/nlink-jp/incident-review/releases), then register it:
 
-```bash
-unzip incident-review-vX.Y.Z.zip -d ~/.claude/skills/
-```
+- **In the app** (Claude Desktop, claude.ai, mobile) — add the zip from the
+  skill settings (Customize → Skills). Prefer this route; it survives changes
+  to where skills are stored on disk.
+- **Claude Code** — `unzip incident-review-vX.Y.Z.zip -d ~/.claude/skills/`, or into a
+  project's `.claude/skills/` for a project-scoped install.
 
 From a checkout:
 
 ```bash
 make install
 ```
+
+That builds the release zip and unpacks *that*, so what you run is what a
+release ships — a packaging defect breaks your install rather than reaching
+users. `make install DEST=/path/to/skills` installs elsewhere;
+`make uninstall` removes it.
 
 Requirements: Claude Code and `python3` (3.9+, stdlib only) for the bundled
 preprocess/validation/compile scripts. No API keys, no cloud project — the
