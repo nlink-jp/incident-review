@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## v0.1.2 - 2026-09-23
+
 ### Docs
 
 - Correct the Slack-export example in `references/input-formats.md` to what
