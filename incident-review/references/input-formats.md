@@ -18,7 +18,7 @@ The shared export schema of the nlink-jp Slack tools:
 ```json
 {
   "export_timestamp": "2026-07-10T18:00:00+09:00",
-  "channel_name": "incident-example",
+  "channel_name": "#incident-example",
   "messages": [
     {
       "user_id": "U012345",
@@ -27,9 +27,9 @@ The shared export schema of the nlink-jp Slack tools:
       "timestamp": "2026-07-10T09:15:00+09:00",
       "timestamp_unix": "1783980900.000100",
       "text": "...",
+      "files": [],
       "attachments": [],
       "blocks": [],
-      "thread_timestamp_unix": "",
       "is_reply": false
     }
   ]
@@ -41,6 +41,13 @@ Detected by the presence of `channel_name`. Required per message:
 empty, content is recovered from legacy `attachments`
 (pretext/title/text/fallback) and Block Kit `blocks`, in that order —
 same fallback ai-ir2 used.
+
+Field notes from the writing tools: `channel_name` carries the `#`,
+`files` is always present (possibly empty), `thread_timestamp_unix` is
+omitted when the message is not in a thread, and `text` is the raw API
+text with mentions left as `<@U…>`. scat and scli group replies under
+their parent, so messages are not in strict time order; stail's NDJSON
+is in page order and omits `local_path`.
 
 ## 2. Slack export (stail) — NDJSON
 

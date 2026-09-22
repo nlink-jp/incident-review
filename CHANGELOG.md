@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+### Docs
+
+- Correct the Slack-export example in `references/input-formats.md` to what
+  scat v2 and scli actually write: `channel_name` carries the `#`, `files` is
+  always present, `thread_timestamp_unix` is omitted outside a thread, `text`
+  keeps raw mentions, and replies are grouped under their parent rather than
+  ordered by time. The preprocessor already accepted all of this.
+
 ### Changed
 
 - The design record for this skill moved out of the organization ADR log
